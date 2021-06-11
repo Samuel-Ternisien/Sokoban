@@ -17,12 +17,11 @@ class sokobanController:
         self.__view = view
 
     def winCheck(self):
-
         pieces = self.__model.getPieces()
 
         caisse = self.__model.getCaisse()
 
-        if(caisse == pieces):
+        if(len(caisse)==0):
             self.__view.winScreen()
             print("win")
 

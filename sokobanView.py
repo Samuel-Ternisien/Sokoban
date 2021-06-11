@@ -114,9 +114,8 @@ class sokobanView(QMainWindow):
         caisse = QtGui.QPixmap(os.path.join(iconroot, "ressources/img/caisse.png"))
         sol = QtGui.QPixmap(os.path.join(iconroot, "ressources/img/sol.png"))
 
-        print(tab)
-        print("t")
-        print(tabb)
+
+
 
         for x in range(len(tabb)):
             for y in range(len(tabb[x])):
@@ -184,6 +183,8 @@ class sokobanView(QMainWindow):
             if(v==6):
                 label.setPixmap(score)
                 self.__gridLayout.addWidget(label,i,j)
+                QSound.play("ressources/sound/Score.wav")
+
 
     def winScreen(self):
         """

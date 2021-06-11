@@ -59,6 +59,7 @@ class SokobanModel:
     def setMatrix(self,matrix):
         self.__matrix=matrix
         self.__baseMatrix=matrix
+        
     def setLevel(self,level):
         self.__level=level
     def setPiece(self):

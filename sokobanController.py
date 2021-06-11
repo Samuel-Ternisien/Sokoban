@@ -216,6 +216,8 @@ class sokobanController:
             l+=1
             c=0
         result = np.array(lvlayout)
+        self.__view.setPrev(self.__view.getMatrix())
         self.__view.setMatrix(result)
         self.__model.setMatrix(result)
         self.__model.setLevel(level)
+        self.__view.cleanView()

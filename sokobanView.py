@@ -17,6 +17,8 @@ class sokobanView(QMainWindow):
 
         self.__matrix = None
 
+        self.__previousMatrix = None
+
 
         self.__window = QWidget()
         self.setCentralWidget(self.__window)
@@ -104,13 +106,23 @@ class sokobanView(QMainWindow):
     def cleanView(self):
         QSound.play("ressources/sound/Welcome.wav")
         tab = self.__matrix
+        tabb = self.__previousMatrix
         vide = QtGui.QPixmap(os.path.join(iconroot, "ressources/img/vide.png"))
         mur = QtGui.QPixmap(os.path.join(iconroot, "ressources/img/mur.png"))
         piece = QtGui.QPixmap(os.path.join(iconroot, "ressources/img/piece.png"))
         joueur = QtGui.QPixmap(os.path.join(iconroot, "ressources/img/joueur.png"))
         caisse = QtGui.QPixmap(os.path.join(iconroot, "ressources/img/caisse.png"))
         sol = QtGui.QPixmap(os.path.join(iconroot, "ressources/img/sol.png"))
-        score = QtGui.QPixmap(os.path.join(iconroot, "ressources/img/scored.png"))
+
+        print(tab)
+        print("t")
+        print(tabb)
+
+        for x in range(len(tabb)):
+            for y in range(len(tabb[x])):
+                label = QLabel(self)
+                label.setPixmap(vide)
+                self.__gridLayout.addWidget(label, x, y)
 
         for x in range(len(tab)):
             for y in range(len(tab[x])):
@@ -181,6 +193,12 @@ class sokobanView(QMainWindow):
     def getMouvements(self, mouvements):
         self.statusBar().showMessage("Number of mouvement: "+ str(mouvements))
 
+    def getMatrix(self):
+        return self.__matrix
+
+    def setPrev(self, matrix):
+        self.__previousMatrix = matrix
+
     def setMatrix(self,matrix):
         tab=matrix
         vide = QtGui.QPixmap(os.path.join(iconroot, "ressources/img/vide.png"))
@@ -212,3 +230,5 @@ class sokobanView(QMainWindow):
                     label.setPixmap(sol)
                     self.__gridLayout.addWidget(label, x, y)
         self.__matrix=matrix
+        if(self.__previousMatrix is None):
+            self.__previousMatrix = matrix

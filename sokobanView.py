@@ -191,6 +191,9 @@ class sokobanView(QMainWindow):
         TODO
         """
         QSound.play("ressources/sound/victory.wav")
+        victory=QLabel("Victory")
+        victory.show()
+
     def getMouvements(self, mouvements):
         self.statusBar().showMessage("Number of mouvement: "+ str(mouvements))
 

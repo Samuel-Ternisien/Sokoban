@@ -25,6 +25,4 @@ model.setPiece()
 
 view.show()
 
-#model.set(3,3,3)
-
 sys.exit(app.exec_())

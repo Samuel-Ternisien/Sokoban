@@ -29,6 +29,7 @@ class sokobanView(QMainWindow):
         self.__window.setLayout(self.__gridLayout)
         self.statusBar().showMessage("Number of mouvement: 0")
         self.setLayout(self.__gridLayout)
+        self.setFixedSize(600,600)
 
         #MENU DU JEU : INIT
         menuBar = self.menuBar()

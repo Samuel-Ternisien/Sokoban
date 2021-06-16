@@ -240,3 +240,4 @@ class sokobanController:
         self.__model.setMatrix(result)
         self.__model.setLevel(level)
         self.__view.cleanView()
+        self.__mouvements = 0

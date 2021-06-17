@@ -6,7 +6,7 @@ class sokobanController:
         self.__model = None
         self.__view = None
         self.__mouvements = 0
-        self.__win = None
+        self.__win = False
 
     def setModel(self, model):
 
@@ -22,189 +22,191 @@ class sokobanController:
 
         if(caisse == []):
             self.__view.winScreen()
-            print("win")
+            self.__win = True
 
     def moveEvent(self, v):
         positionmainCharacter = self.__model.getMainCharacter()
         pieces = self.__model.getPieces()
 
-        if(v == (-1, 0)): #GAUCHE
-            if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 1) != 1): # SI C'EST PAS UN MUR
-                if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 1) == 4 or self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 1) == 6): #SI C'EST UNE CAISSE APRES
-                    coord = positionmainCharacter[0], positionmainCharacter[1] - 1
-                    checkpiece = positionmainCharacter[0], positionmainCharacter[1]
-                    if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 1) == 6 and coord not in pieces or self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 1) == 4 and coord not in pieces): # SI C DEJA SUR UNE PIECE
-                        if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 2) != 1): # SI YA PAS DE MUR APRES LA CAISSE
-                            if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 2) != 4 and self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 2) != 6): # SI YA PAS DE CAISSE APRES LA CAISSE
-                                if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 2) == 2): # CHANGER LA CAISSE 
-                                    self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
-                                    ligne = positionmainCharacter[1] - 1 
-                                    self.__model.set(positionmainCharacter[0], ligne, 3)
-                                    self.__model.set(positionmainCharacter[0], ligne - 1, 6) # CHANGE LA CAISSE
-                                    self.__mouvements += 1
-                                    self.__view.getMouvements(self.__mouvements)
-                                    if(checkpiece in pieces):
-                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
-                                else:
-                                    self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
-                                    ligne = positionmainCharacter[1] - 1 
-                                    self.__model.set(positionmainCharacter[0], ligne, 3)
-                                    self.__model.set(positionmainCharacter[0], ligne - 1, 4)
-                                    self.__mouvements += 1
-                                    self.__view.getMouvements(self.__mouvements)
-                                    if(checkpiece in pieces):
-                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
+        if(self.__win == False):
+            if(v == (-1, 0)): #GAUCHE
+                if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 1) != 1): # SI C'EST PAS UN MUR
+                    if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 1) == 4 or self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 1) == 6): #SI C'EST UNE CAISSE APRES
+                        coord = positionmainCharacter[0], positionmainCharacter[1] - 1
+                        checkpiece = positionmainCharacter[0], positionmainCharacter[1]
+                        if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 1) == 6 and coord not in pieces or self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 1) == 4 and coord not in pieces): # SI C DEJA SUR UNE PIECE
+                            if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 2) != 1): # SI YA PAS DE MUR APRES LA CAISSE
+                                if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 2) != 4 and self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 2) != 6): # SI YA PAS DE CAISSE APRES LA CAISSE
+                                    if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] - 2) == 2): # CHANGER LA CAISSE 
+                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
+                                        ligne = positionmainCharacter[1] - 1 
+                                        self.__model.set(positionmainCharacter[0], ligne, 3)
+                                        self.__model.set(positionmainCharacter[0], ligne - 1, 6) # CHANGE LA CAISSE
+                                        self.__mouvements += 1
+                                        self.__view.getMouvements(self.__mouvements)
+                                        if(checkpiece in pieces):
+                                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
+                                    else:
+                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
+                                        ligne = positionmainCharacter[1] - 1 
+                                        self.__model.set(positionmainCharacter[0], ligne, 3)
+                                        self.__model.set(positionmainCharacter[0], ligne - 1, 4)
+                                        self.__mouvements += 1
+                                        self.__view.getMouvements(self.__mouvements)
+                                        if(checkpiece in pieces):
+                                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
 
-                else:
-                    coord = positionmainCharacter[0], positionmainCharacter[1]
-                    if(coord in pieces):
-                        ligne = positionmainCharacter[1] - 1 
-                        self.__model.set(positionmainCharacter[0], ligne, 3)
-                        self.__mouvements += 1
-                        self.__view.getMouvements(self.__mouvements)
-                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
                     else:
-                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
-                        ligne = positionmainCharacter[1] - 1 
-                        self.__model.set(positionmainCharacter[0], ligne, 3)
-                        self.__mouvements += 1
-                        self.__view.getMouvements(self.__mouvements)
+                        coord = positionmainCharacter[0], positionmainCharacter[1]
+                        if(coord in pieces):
+                            ligne = positionmainCharacter[1] - 1 
+                            self.__model.set(positionmainCharacter[0], ligne, 3)
+                            self.__mouvements += 1
+                            self.__view.getMouvements(self.__mouvements)
+                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
+                        else:
+                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
+                            ligne = positionmainCharacter[1] - 1 
+                            self.__model.set(positionmainCharacter[0], ligne, 3)
+                            self.__mouvements += 1
+                            self.__view.getMouvements(self.__mouvements)
 
-        if(v == (1, 0)): #DROITE
-            if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 1) != 1): # SI C'EST PAS UN MUR
-                if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 1) == 4 or self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 1) == 6): #SI C'EST UNE CAISSE APRES
-                    coord = positionmainCharacter[0], positionmainCharacter[1] + 1
-                    checkpiece = positionmainCharacter[0], positionmainCharacter[1]
-                    if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 1) == 6 and coord not in pieces or self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 1) == 4 and coord not in pieces): # SI C DEJA SUR UNE PIECE
-                        if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 2) != 1): # SI YA PAS DE MUR APRES LA CAISSE
-                            if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 2) != 4 and self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 2) != 6) :
-                                if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 2) == 2):
-                                    self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
-                                    ligne = positionmainCharacter[1] + 1 
-                                    self.__model.set(positionmainCharacter[0], ligne, 3)
-                                    self.__model.set(positionmainCharacter[0], ligne + 1, 6)
-                                    self.__mouvements += 1
-                                    self.__view.getMouvements(self.__mouvements)
-                                    if(checkpiece in pieces):
-                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
-                                else:
-                                    self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
-                                    ligne = positionmainCharacter[1] + 1 
-                                    self.__model.set(positionmainCharacter[0], ligne, 3)
-                                    self.__model.set(positionmainCharacter[0], ligne + 1, 4)
-                                    self.__mouvements += 1
-                                    self.__view.getMouvements(self.__mouvements)
-                                    if(checkpiece in pieces):
-                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
-                else:
+            if(v == (1, 0)): #DROITE
+                if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 1) != 1): # SI C'EST PAS UN MUR
+                    if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 1) == 4 or self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 1) == 6): #SI C'EST UNE CAISSE APRES
+                        coord = positionmainCharacter[0], positionmainCharacter[1] + 1
+                        checkpiece = positionmainCharacter[0], positionmainCharacter[1]
+                        if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 1) == 6 and coord not in pieces or self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 1) == 4 and coord not in pieces): # SI C DEJA SUR UNE PIECE
+                            if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 2) != 1): # SI YA PAS DE MUR APRES LA CAISSE
+                                if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 2) != 4 and self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 2) != 6) :
+                                    if(self.__model.getCase(positionmainCharacter[0], positionmainCharacter[1] + 2) == 2):
+                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
+                                        ligne = positionmainCharacter[1] + 1 
+                                        self.__model.set(positionmainCharacter[0], ligne, 3)
+                                        self.__model.set(positionmainCharacter[0], ligne + 1, 6)
+                                        self.__mouvements += 1
+                                        self.__view.getMouvements(self.__mouvements)
+                                        if(checkpiece in pieces):
+                                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
+                                    else:
+                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
+                                        ligne = positionmainCharacter[1] + 1 
+                                        self.__model.set(positionmainCharacter[0], ligne, 3)
+                                        self.__model.set(positionmainCharacter[0], ligne + 1, 4)
+                                        self.__mouvements += 1
+                                        self.__view.getMouvements(self.__mouvements)
+                                        if(checkpiece in pieces):
+                                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
+                    else:
 
-                    coord = positionmainCharacter[0], positionmainCharacter[1]
-                    if(coord in pieces):
-                        ligne = positionmainCharacter[1] + 1 
-                        self.__model.set(positionmainCharacter[0], ligne, 3)
-                        self.__mouvements += 1
-                        self.__view.getMouvements(self.__mouvements)
-                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
+                        coord = positionmainCharacter[0], positionmainCharacter[1]
+                        if(coord in pieces):
+                            ligne = positionmainCharacter[1] + 1 
+                            self.__model.set(positionmainCharacter[0], ligne, 3)
+                            self.__mouvements += 1
+                            self.__view.getMouvements(self.__mouvements)
+                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
+                        else:
+                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
+                            ligne = positionmainCharacter[1] + 1 
+                            self.__model.set(positionmainCharacter[0], ligne, 3)
+                            self.__mouvements += 1
+                            self.__view.getMouvements(self.__mouvements)
+            
+            if(v == (0, -1)): #HAUT
+                if(self.__model.getCase(positionmainCharacter[0] - 1, positionmainCharacter[1]) != 1):
+                    if(self.__model.getCase(positionmainCharacter[0] - 1, positionmainCharacter[1]) == 4 or self.__model.getCase(positionmainCharacter[0] - 1, positionmainCharacter[1]) == 6):
+                        coord = positionmainCharacter[0] - 1, positionmainCharacter[1]
+                        checkpiece = positionmainCharacter[0], positionmainCharacter[1]
+                        if(self.__model.getCase(positionmainCharacter[0] - 1, positionmainCharacter[1]) == 6 and coord not in pieces or self.__model.getCase(positionmainCharacter[0] - 1, positionmainCharacter[1]) == 4 and coord not in pieces):
+                            if(self.__model.getCase(positionmainCharacter[0] - 2, positionmainCharacter[1]) != 1):
+                                if(self.__model.getCase(positionmainCharacter[0] - 2, positionmainCharacter[1]) != 4 and self.__model.getCase(positionmainCharacter[0] - 2, positionmainCharacter[1]) != 6):
+                                    if(self.__model.getCase(positionmainCharacter[0] - 2, positionmainCharacter[1]) == 2):
+                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
+                                        ligne = positionmainCharacter[0] - 1 
+                                        self.__model.set(ligne, positionmainCharacter[1], 3)
+                                        self.__model.set(ligne - 1, positionmainCharacter[1], 6)
+                                        self.__mouvements += 1
+                                        self.__view.getMouvements(self.__mouvements)
+                                        if(checkpiece in pieces):
+                                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
+                                    else:
+                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
+                                        ligne = positionmainCharacter[0] - 1 
+                                        self.__model.set(ligne, positionmainCharacter[1], 3)
+                                        self.__model.set(ligne - 1, positionmainCharacter[1], 4)
+                                        self.__mouvements += 1
+                                        self.__view.getMouvements(self.__mouvements)
+                                        if(checkpiece in pieces):
+                                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
                     else:
-                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
-                        ligne = positionmainCharacter[1] + 1 
-                        self.__model.set(positionmainCharacter[0], ligne, 3)
-                        self.__mouvements += 1
-                        self.__view.getMouvements(self.__mouvements)
-        
-        if(v == (0, -1)): #HAUT
-            if(self.__model.getCase(positionmainCharacter[0] - 1, positionmainCharacter[1]) != 1):
-                if(self.__model.getCase(positionmainCharacter[0] - 1, positionmainCharacter[1]) == 4 or self.__model.getCase(positionmainCharacter[0] - 1, positionmainCharacter[1]) == 6):
-                    coord = positionmainCharacter[0] - 1, positionmainCharacter[1]
-                    checkpiece = positionmainCharacter[0], positionmainCharacter[1]
-                    if(self.__model.getCase(positionmainCharacter[0] - 1, positionmainCharacter[1]) == 6 and coord not in pieces or self.__model.getCase(positionmainCharacter[0] - 1, positionmainCharacter[1]) == 4 and coord not in pieces):
-                        if(self.__model.getCase(positionmainCharacter[0] - 2, positionmainCharacter[1]) != 1):
-                            if(self.__model.getCase(positionmainCharacter[0] - 2, positionmainCharacter[1]) != 4 and self.__model.getCase(positionmainCharacter[0] - 2, positionmainCharacter[1]) != 6):
-                                if(self.__model.getCase(positionmainCharacter[0] - 2, positionmainCharacter[1]) == 2):
-                                    self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
-                                    ligne = positionmainCharacter[0] - 1 
-                                    self.__model.set(ligne, positionmainCharacter[1], 3)
-                                    self.__model.set(ligne - 1, positionmainCharacter[1], 6)
-                                    self.__mouvements += 1
-                                    self.__view.getMouvements(self.__mouvements)
-                                    if(checkpiece in pieces):
-                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
-                                else:
-                                    self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
-                                    ligne = positionmainCharacter[0] - 1 
-                                    self.__model.set(ligne, positionmainCharacter[1], 3)
-                                    self.__model.set(ligne - 1, positionmainCharacter[1], 4)
-                                    self.__mouvements += 1
-                                    self.__view.getMouvements(self.__mouvements)
-                                    if(checkpiece in pieces):
-                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
-                else:
-                    coord = positionmainCharacter[0], positionmainCharacter[1]
-                    if(coord in pieces):
-                        ligne = positionmainCharacter[0] - 1 
-                        self.__model.set(ligne, positionmainCharacter[1], 3)
-                        self.__mouvements += 1
-                        self.__view.getMouvements(self.__mouvements)
-                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
-                    else:
-                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
-                        ligne = positionmainCharacter[0] - 1 
-                        self.__model.set(ligne, positionmainCharacter[1], 3)
-                        self.__mouvements += 1
-                        self.__view.getMouvements(self.__mouvements)
+                        coord = positionmainCharacter[0], positionmainCharacter[1]
+                        if(coord in pieces):
+                            ligne = positionmainCharacter[0] - 1 
+                            self.__model.set(ligne, positionmainCharacter[1], 3)
+                            self.__mouvements += 1
+                            self.__view.getMouvements(self.__mouvements)
+                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
+                        else:
+                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
+                            ligne = positionmainCharacter[0] - 1 
+                            self.__model.set(ligne, positionmainCharacter[1], 3)
+                            self.__mouvements += 1
+                            self.__view.getMouvements(self.__mouvements)
 
-        if(v == (0, 1)): #BAS
-            if(self.__model.getCase(positionmainCharacter[0] + 1, positionmainCharacter[1]) != 1):
-                if(self.__model.getCase(positionmainCharacter[0] + 1, positionmainCharacter[1]) == 4 or self.__model.getCase(positionmainCharacter[0] + 1, positionmainCharacter[1]) == 6):
-                    coord = positionmainCharacter[0] + 1, positionmainCharacter[1]
-                    checkpiece = positionmainCharacter[0], positionmainCharacter[1]
-                    if(self.__model.getCase(positionmainCharacter[0] + 1, positionmainCharacter[1]) == 6 and coord not in pieces or self.__model.getCase(positionmainCharacter[0] + 1, positionmainCharacter[1]) == 4 and coord not in pieces):
-                        if(self.__model.getCase(positionmainCharacter[0] + 2, positionmainCharacter[1]) != 1):
-                            if(self.__model.getCase(positionmainCharacter[0] + 2, positionmainCharacter[1]) != 4 and self.__model.getCase(positionmainCharacter[0] + 2, positionmainCharacter[1]) != 6):
-                                if(self.__model.getCase(positionmainCharacter[0] + 2, positionmainCharacter[1]) == 2):
-                                    self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
-                                    ligne = positionmainCharacter[0] + 1 
-                                    self.__model.set(ligne, positionmainCharacter[1], 3)
-                                    self.__model.set(ligne + 1, positionmainCharacter[1], 6)
-                                    self.__mouvements += 1
-                                    self.__view.getMouvements(self.__mouvements)
-                                    if(checkpiece in pieces):
-                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
-                                else:
-                                    self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
-                                    ligne = positionmainCharacter[0] + 1 
-                                    self.__model.set(ligne, positionmainCharacter[1], 3)
-                                    self.__model.set(ligne + 1, positionmainCharacter[1], 4)
-                                    self.__mouvements += 1
-                                    self.__view.getMouvements(self.__mouvements)
-                                    if(checkpiece in pieces):
-                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
-                else:
-                    coord = positionmainCharacter[0], positionmainCharacter[1]
-                    if(coord in pieces):
-                        ligne = positionmainCharacter[0] + 1 
-                        self.__model.set(ligne, positionmainCharacter[1], 3)
-                        self.__mouvements += 1
-                        self.__view.getMouvements(self.__mouvements)
-                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
+            if(v == (0, 1)): #BAS
+                if(self.__model.getCase(positionmainCharacter[0] + 1, positionmainCharacter[1]) != 1):
+                    if(self.__model.getCase(positionmainCharacter[0] + 1, positionmainCharacter[1]) == 4 or self.__model.getCase(positionmainCharacter[0] + 1, positionmainCharacter[1]) == 6):
+                        coord = positionmainCharacter[0] + 1, positionmainCharacter[1]
+                        checkpiece = positionmainCharacter[0], positionmainCharacter[1]
+                        if(self.__model.getCase(positionmainCharacter[0] + 1, positionmainCharacter[1]) == 6 and coord not in pieces or self.__model.getCase(positionmainCharacter[0] + 1, positionmainCharacter[1]) == 4 and coord not in pieces):
+                            if(self.__model.getCase(positionmainCharacter[0] + 2, positionmainCharacter[1]) != 1):
+                                if(self.__model.getCase(positionmainCharacter[0] + 2, positionmainCharacter[1]) != 4 and self.__model.getCase(positionmainCharacter[0] + 2, positionmainCharacter[1]) != 6):
+                                    if(self.__model.getCase(positionmainCharacter[0] + 2, positionmainCharacter[1]) == 2):
+                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
+                                        ligne = positionmainCharacter[0] + 1 
+                                        self.__model.set(ligne, positionmainCharacter[1], 3)
+                                        self.__model.set(ligne + 1, positionmainCharacter[1], 6)
+                                        self.__mouvements += 1
+                                        self.__view.getMouvements(self.__mouvements)
+                                        if(checkpiece in pieces):
+                                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
+                                    else:
+                                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
+                                        ligne = positionmainCharacter[0] + 1 
+                                        self.__model.set(ligne, positionmainCharacter[1], 3)
+                                        self.__model.set(ligne + 1, positionmainCharacter[1], 4)
+                                        self.__mouvements += 1
+                                        self.__view.getMouvements(self.__mouvements)
+                                        if(checkpiece in pieces):
+                                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
                     else:
-                        self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
-                        ligne = positionmainCharacter[0] + 1 
-                        self.__model.set(ligne, positionmainCharacter[1], 3)
-                        self.__mouvements += 1
-                        self.__view.getMouvements(self.__mouvements)
-        
-        self.winCheck()
+                        coord = positionmainCharacter[0], positionmainCharacter[1]
+                        if(coord in pieces):
+                            ligne = positionmainCharacter[0] + 1 
+                            self.__model.set(ligne, positionmainCharacter[1], 3)
+                            self.__mouvements += 1
+                            self.__view.getMouvements(self.__mouvements)
+                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 2)
+                        else:
+                            self.__model.set(positionmainCharacter[0], positionmainCharacter[1], 5)
+                            ligne = positionmainCharacter[0] + 1 
+                            self.__model.set(ligne, positionmainCharacter[1], 3)
+                            self.__mouvements += 1
+                            self.__view.getMouvements(self.__mouvements)
+            
+            self.winCheck()
 
     def restartGame(self):
         self.__model.clear()
         self.__view.cleanView()
 
         self.__mouvements = 0
-        self.__win = None
+        
         self.setLevel(self.__model.getLevel())
 
     def setLevel(self,level):
+        self.__win = False
         l=0
         c=0
         with open(f"ressources/lvl/level{level}.txt") as file:

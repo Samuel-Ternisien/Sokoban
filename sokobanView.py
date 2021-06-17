@@ -187,6 +187,23 @@ class sokobanView(QMainWindow):
         TODO
         """
         QSound.play("ressources/sound/victory.wav")
+
+        msgBox = QMessageBox()
+        msgBox.setWindowTitle("Victoire !")
+        msgBox.setText('Que voulez vous faire ?')
+        res = msgBox.addButton('Recommencer', QMessageBox.YesRole)
+        lea = msgBox.addButton('Quitter', QMessageBox.NoRole)
+
+        msgBox.exec_()
+        msgBox.deleteLater()
+
+        if msgBox.clickedButton() == res:
+            
+            self.restart()
+
+        elif msgBox.clickedButton() == lea:
+            sys.exit()
+        
     def getMouvements(self, mouvements):
         self.statusBar().showMessage("Number of mouvement: "+ str(mouvements))
 
